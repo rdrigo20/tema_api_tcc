@@ -12,18 +12,18 @@ require_once($template_diretorio . "/custom-post-type/resultado.php");
 //INCLUINDO OS ARQUIVOS DE ENDPOINTS
 
 //Arquivos do usuário
-require_once($template_diretorio . "/endpoints/usuario_post.php");
-require_once($template_diretorio . "/endpoints/usuario_get.php");
-require_once($template_diretorio . "/endpoints/usuario_put.php");
+require_once($template_diretorio . "/endpoints/user/usuario_post.php");
+require_once($template_diretorio . "/endpoints/user/usuario_get.php");
+require_once($template_diretorio . "/endpoints/user/usuario_put.php");
 
 //Arquivos do custom post type pergunta
-require_once($template_diretorio . "/endpoints/pergunta_create.php");
-require_once($template_diretorio . "/endpoints/pergunta_get_all.php");
-require_once($template_diretorio . "/endpoints/pergunta_get_by_slug.php");
-require_once($template_diretorio . "/endpoints/pergunta_get_by_id.php");
-require_once($template_diretorio . "/endpoints/pergunta_delete_by_slug.php");
-require_once($template_diretorio . "/endpoints/pergunta_delete_by_id.php");
-require_once($template_diretorio . "/endpoints/pergunta_update_by_slug.php");
-require_once($template_diretorio . "/endpoints/pergunta_update_by_id.php");
+require_once($template_diretorio . "/endpoints/pergunta/pergunta_create.php");
+require_once($template_diretorio . "/endpoints/pergunta/pergunta_get_all.php");
+require_once($template_diretorio . "/endpoints/pergunta/pergunta_get_by_slug.php");
+require_once($template_diretorio . "/endpoints/pergunta/pergunta_get_by_id.php");
+require_once($template_diretorio . "/endpoints/pergunta/pergunta_delete_by_slug.php");
+require_once($template_diretorio . "/endpoints/pergunta/pergunta_delete_by_id.php");
+require_once($template_diretorio . "/endpoints/pergunta/pergunta_update_by_slug.php");
+require_once($template_diretorio . "/endpoints/pergunta/pergunta_update_by_id.php");
 
 ?>
