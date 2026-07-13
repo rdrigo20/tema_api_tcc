@@ -4,8 +4,8 @@
 function registrar_cpt_resposta() {
     //função do WP para registrar um custom post type
     register_post_type('resposta',array(
-        'label' => 'resposta',
-        'description' => 'resposta',
+        'label' => 'Resposta',
+        'description' => 'Resposta',
         'public' => true,
         'show_ui' => true,
         'show_in_menu' => true, //n tinha no video mas ele faz q esse CPT apareça no menu lateral do WP, em teoria ele é inútil pois por padrão quando o 'show_ui' é true ele já aparece no menu, mas eu deixei pq n sei se em algum momento isso vai mudar
