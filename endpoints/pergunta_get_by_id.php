@@ -25,7 +25,7 @@ function get_pergunta_by_id(WP_REST_Request $request) {
     $post_data = array(
         'id' => $post->ID,
         'title' => $post->post_title,
-        'content' => $post->post_content,
+        'content' => $post->post_content, //se n for o post_content o bagulho n vai
         'author' => get_the_author_meta('display_name', $post->post_author),
         'date' => $post->post_date,
         'slug' => $post->post_name,

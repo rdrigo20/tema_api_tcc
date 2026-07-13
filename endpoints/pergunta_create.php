@@ -17,9 +17,9 @@ function pergunta_create($request) {
         'post_type' => 'pergunta',
         'post_title' => $titulo,
         'post_status' => 'publish',
+        'post_content' => $conteudo,
         //meta_input é um array que permite salvar os campos personalizados do custom post type
         'meta_input' => array(
-            'conteudo' => $conteudo,
             'ordem' => $ordem,
             'mostrar' => true, //esse campo é pra eu poder controlar se a pergunta vai ser mostrada ou não, por padrão ele vai ser true
         ),

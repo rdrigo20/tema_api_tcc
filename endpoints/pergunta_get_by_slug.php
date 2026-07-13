@@ -31,7 +31,7 @@ function get_pergunta_by_slug(WP_REST_Request $request) {
         'slug' => $post->post_name,
         //vai pegar os campos personalizados do custom post type
         'meta' => array(
-            'conteudo' => get_post_meta($post->ID, 'conteudo', true),
+            //'conteudo' => get_post_meta($post->ID, 'conteudo', true),
             'ordem' => get_post_meta($post->ID, 'ordem', true),
             'mostrar' => get_post_meta($post->ID, 'mostrar', true),
         ),

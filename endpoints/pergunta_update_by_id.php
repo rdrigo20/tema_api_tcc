@@ -28,9 +28,10 @@ function update_pergunta_by_id(WP_REST_Request $request) {
     $updated_post = array(
         'ID' => $post->ID,
         'post_title' => sanitize_text_field($request['titulo']),
+        'post_content' => sanitize_text_field($request['conteudo']),
         //vai pegar os campos personalizados do custom post type
         'meta_input' => array(
-            'conteudo' => get_post_meta($post->ID, 'conteudo', true),
+            //'conteudo' => get_post_meta($post->ID, 'conteudo', true),
             'ordem' => get_post_meta($post->ID, 'ordem', true),
             'mostrar' => get_post_meta($post->ID, 'mostrar', true),
         ),

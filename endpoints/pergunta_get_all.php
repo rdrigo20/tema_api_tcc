@@ -20,13 +20,13 @@ function get_all_pergunta(WP_REST_Request $request) {
         $post_data = array(
             'id' => $post->ID, //pega o ID do post da vez
             'title' => $post->post_title,
-            'content' => $post->post_content,
+            'content' => $post->post_content, //se n for o post_content o bagulho n vai
             'author' => get_the_author_meta('display_name', $post->post_author),
             'date' => $post->post_date,
             'slug' => $post->post_name,
             //vai pegar os campos personalizados do custom post type
             'meta' => array(
-                'conteudo' => get_post_meta($post->ID, 'conteudo', true),
+                //'conteudo' => get_post_meta($post->ID, 'conteudo', true),
                 'ordem' => get_post_meta($post->ID, 'ordem', true),
                 'mostrar' => get_post_meta($post->ID, 'mostrar', true),
             ),
