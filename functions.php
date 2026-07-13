@@ -18,5 +18,6 @@ require_once($template_diretorio . "/endpoints/usuario_put.php");
 
 //Arquivos do custom post type pergunta
 require_once($template_diretorio . "/endpoints/pergunta_create.php");
+require_once($template_diretorio . "/endpoints/pergunta_get_all.php");
 
 ?>
