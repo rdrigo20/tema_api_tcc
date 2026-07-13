@@ -15,9 +15,10 @@ function get_all_pergunta(WP_REST_Request $request) {
 
     // Preparar os dados para a resposta
     $data = array();
+    // Loop pelos posts
     foreach ($posts as $post) {
         $post_data = array(
-            'id' => $post->ID, //pega o ID do post
+            'id' => $post->ID, //pega o ID do post da vez
             'title' => $post->post_title,
             'content' => $post->post_content,
             'author' => get_the_author_meta('display_name', $post->post_author),
