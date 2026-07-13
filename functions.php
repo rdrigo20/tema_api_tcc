@@ -21,5 +21,7 @@ require_once($template_diretorio . "/endpoints/pergunta_create.php");
 require_once($template_diretorio . "/endpoints/pergunta_get_all.php");
 require_once($template_diretorio . "/endpoints/pergunta_get_by_slug.php");
 require_once($template_diretorio . "/endpoints/pergunta_get_by_id.php");
+require_once($template_diretorio . "/endpoints/pergunta_delete_by_slug.php");
+require_once($template_diretorio . "/endpoints/pergunta_delete_by_id.php");
 
 ?>
