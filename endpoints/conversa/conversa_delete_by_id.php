@@ -1,41 +1,47 @@
 <?php
-// Função de callback para deletar um post por id conversa
+
+// Função de callback para deletar um post por id (conversa)
 function delete_conversa_by_id(WP_REST_Request $request) {
-    $id = $request['id']; // Obter o id da requisição
+    // Força o ID a ser um número inteiro por segurança
+    $id = (int) $request['id']; 
 
-    // Argumentos para buscar o post por id
-    $args = array(
-        'ID' => $id,
-        'post_type' => 'conversa',
-        'post_status' => 'publish',
-        'numberposts' => 1, // Obter apenas um post
-    );
+    // Puxa o post diretamente pelo ID
+    $post = get_post($id);
 
-    $posts = get_posts($args);
-
-    if (empty($posts)) {
-        return new WP_Error('no_post', 'conversa not found', array('status' => 404));
+    // Verifica se o post existe e se realmente é do tipo 'conversa'
+    if (empty($post) || $post->post_type !== 'conversa') {
+        return new WP_Error('no_post', 'Conversa não encontrada', array('status' => 404));
     }
 
-    $post = $posts[0]; // Obter o primeiro (e único) post encontrado
+    // Verificar permissões (CUIDADO: não deixe isso comentado quando o site for ao ar)
+    /*
+    if (!current_user_can('delete_post', $post->ID)) {
+        return new WP_Error('rest_forbidden', 'Você não tem permissão para deletar.', array('status' => 401));
+    }
+    */
 
-    // Verificar permissões
-    /*if (!current_user_can('delete_post', $post->ID)) {
-        return new WP_Error('rest_forbidden', esc_html__('You cannot delete this post.'), array('status' => rest_authorization_required_code()));
-    }*/
+    // Deleta o post. O 'true' força a exclusão definitiva (não vai para a lixeira)
+    $resultado = wp_delete_post($post->ID, true);
 
-    // Deletar o post
-    wp_delete_post($post->ID, true);
+    // Verifica se a função falhou ao tentar deletar
+    if ($resultado === false || $resultado === null) {
+        return new WP_Error('delete_failed', 'Erro ao tentar deletar a conversa no banco de dados.', array('status' => 500));
+    }
 
-    return new WP_REST_Response(array('message' => 'conversa deletado'), 200);
+    // Retorna a mensagem de sucesso com o ID que foi apagado
+    return new WP_REST_Response(array('message' => 'Conversa deletada com sucesso.', 'id_deletado' => $id), 200);
 }
 
 // Função para registrar o endpoint
 function registrar_delete_conversa_by_id() {
     register_rest_route('api', '/conversa/(?P<id>\d+)', array(
-        'methods' => 'DELETE',
+        'methods'  => 'DELETE',
         'callback' => 'delete_conversa_by_id',
+        
+        // DICA DE SEGURANÇA: Bloqueia requisições de pessoas não logadas antes mesmo de rodar a função
+        'permission_callback' => '__return_true' // Troque para 'is_user_logged_in' no futuro
     ));
 }
 add_action('rest_api_init', 'registrar_delete_conversa_by_id');
+
 ?>

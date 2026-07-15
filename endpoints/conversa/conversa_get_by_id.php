@@ -2,34 +2,26 @@
 
 // Função de callback para obter um post por id
 function get_conversa_by_id(WP_REST_Request $request) {
-    $id = $request['id']; // Obter o id da requisição
+    // Converte o ID para número inteiro por segurança
+    $id = (int) $request['id']; 
 
-    // Argumentos para buscar o post por id
-    $args = array(
-        'ID' => $id,
-        'post_type' => 'conversa',
-        'post_status' => 'publish',
-        'numberposts' => 1, // Obter apenas um post
-    );
+    // Puxa o post diretamente pelo ID
+    $post = get_post($id);
 
-    $posts = get_posts($args);
-
-    //verifica se post existe, se n existir retorna um erro 404
-    if (empty($posts)) {
-        return new WP_Error('no_post', 'conversa not found', array('status' => 404));
+    // Verifica se o post existe, se é realmente uma 'conversa' e se está publicado
+    if (empty($post) || $post->post_type !== 'conversa' || $post->post_status !== 'publish') {
+        return new WP_Error('no_post', 'Conversa não encontrada', array('status' => 404));
     }
-
-    $post = $posts[0]; // Obter o primeiro (e único) post encontrado
 
     // Preparar os dados para a resposta
     $post_data = array(
-        'id' => $post->ID,
-        'title' => $post->post_title,
-        'content' => $post->post_content, //se n for o post_content o bagulho n vai
-        'author' => get_the_author_meta('display_name', $post->post_author),
-        'date' => $post->post_date,
-        'modified' => $post->post_modified, //se nada for modificado, vai ser a mesma data do post
-        'slug' => $post->post_name,
+        'id'       => $post->ID,
+        'title'    => $post->post_title,
+        'content'  => $post->post_content, 
+        'author'   => get_the_author_meta('display_name', $post->post_author),
+        'date'     => $post->post_date,
+        'modified' => $post->post_modified, 
+        'slug'     => $post->post_name,
     );
 
     return new WP_REST_Response($post_data, 200);
@@ -38,7 +30,7 @@ function get_conversa_by_id(WP_REST_Request $request) {
 // Função para registrar o endpoint
 function registrar_get_conversa_by_id() {
     register_rest_route('api', '/conversa/(?P<id>\d+)', array(
-        'methods' => 'GET',
+        'methods'  => 'GET',
         'callback' => 'get_conversa_by_id',
     ));
 }
