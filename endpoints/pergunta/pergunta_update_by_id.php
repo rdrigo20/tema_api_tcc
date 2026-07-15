@@ -1,49 +1,66 @@
 <?php
+
 // Função de callback para atualizar um post por id pergunta
 function update_pergunta_by_id(WP_REST_Request $request) {
-    $id = $request['id']; // Obter o id da requisição
+    // 1. Força o ID a ser um número para segurança
+    $id = (int) $request['id']; 
 
-    // Argumentos para buscar o post por id
-    $args = array(
-        'ID' => $id,
-        'post_type' => 'pergunta',
-        'post_status' => 'publish',
-        'numberposts' => 1, // Obter apenas um post
-    );
+    // 2. Busca o post diretamente
+    $post = get_post($id);
 
-    $posts = get_posts($args);
-
-    if (empty($posts)) {
-        return new WP_Error('no_post', 'event not found', array('status' => 404));
+    // 3. Valida se a pergunta existe
+    if (empty($post) || $post->post_type !== 'pergunta' || $post->post_status !== 'publish') {
+        return new WP_Error('no_post', 'Pergunta não encontrada', array('status' => 404));
     }
 
-    $post = $posts[0]; // Obter o primeiro (e único) post encontrado
-
-    // Verificar permissões
+    // Verificar permissões (MUITO importante para rotas PUT/POST/DELETE)
     /*if (!current_user_can('edit_post', $post->ID)) {
         return new WP_Error('rest_forbidden', esc_html__('You cannot edit this post.'), array('status' => rest_authorization_required_code()));
     }*/
 
-    // Atualizar o post
+    // 4. Prepara o array base de atualização
     $updated_post = array(
         'ID' => $post->ID,
-        'post_title' => sanitize_text_field($request['titulo']),
-        'post_content' => sanitize_text_field($request['conteudo']),
-        //vai pegar os campos personalizados do custom post type
-        'meta_input' => array(
-            //'conteudo' => get_post_meta($post->ID, 'conteudo', true),
-            'ordem' => get_post_meta($post->ID, 'ordem', true),
-            'mostrar' => get_post_meta($post->ID, 'mostrar', true),
-        ),
     );
 
-    $post_id = wp_update_post($updated_post);
-
-    if (is_wp_error($post_id)) {
-        return new WP_Error('post_update_failed', 'Failed to update post', array('status' => 500));
+    // 5. Verifica quais campos o JavaScript enviou e adiciona ao array
+    if (isset($request['titulo'])) {
+        $updated_post['post_title'] = sanitize_text_field($request['titulo']);
     }
 
-    return new WP_REST_Response(array('message' => 'pergunta updated'), 200);
+    if (isset($request['conteudo'])) {
+        // Para conteúdo longo (texto com quebras de linha), sanitize_textarea_field é melhor que sanitize_text_field
+        $updated_post['post_content'] = sanitize_textarea_field($request['conteudo']); 
+    }
+
+    // 6. Prepara os Custom Fields (Metadados) recebidos pela requisição
+    $meta_input = array();
+
+    if (isset($request['ordem'])) {
+        // Pega do $request, não do banco!
+        $meta_input['ordem'] = sanitize_text_field($request['ordem']);
+    }
+
+    if (isset($request['mostrar'])) {
+        $meta_input['mostrar'] = sanitize_text_field($request['mostrar']);
+    }
+
+    // Se a requisição enviou algum meta field novo, joga para o array de atualização
+    if (!empty($meta_input)) {
+        $updated_post['meta_input'] = $meta_input;
+    }
+
+    // 7. Executa a atualização
+    // O parâmetro 'true' no final faz a função retornar um WP_Error caso algo dê errado no banco
+    $resultado = wp_update_post($updated_post, true);
+
+    // Se deu erro ao salvar
+    if (is_wp_error($resultado)) {
+        return new WP_Error('post_update_failed', 'Falha ao atualizar a pergunta: ' . $resultado->get_error_message(), array('status' => 500));
+    }
+
+    // Se deu sucesso
+    return new WP_REST_Response(array('message' => 'Pergunta atualizada com sucesso', 'id' => $post->ID), 200);
 }
 
 // Função para registrar o endpoint
@@ -51,6 +68,7 @@ function registrar_update_pergunta_by_id() {
     register_rest_route('api', '/pergunta/(?P<id>\d+)', array(
         'methods' => 'PUT',
         'callback' => 'update_pergunta_by_id',
+        // 'permission_callback' => function() { return current_user_can('edit_posts'); } // Quando quiser ligar a segurança, use isto!
     ));
 }
 add_action('rest_api_init', 'registrar_update_pergunta_by_id');

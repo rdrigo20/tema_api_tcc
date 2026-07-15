@@ -1,33 +1,31 @@
 <?php
+
 // Função de callback para deletar um post por id pergunta
 function delete_pergunta_by_id(WP_REST_Request $request) {
-    $id = $request['id']; // Obter o id da requisição
+    // Força o ID a ser um número inteiro por segurança
+    $id = (int) $request['id']; 
 
-    // Argumentos para buscar o post por id
-    $args = array(
-        'ID' => $id,
-        'post_type' => 'pergunta',
-        'post_status' => 'publish',
-        'numberposts' => 1, // Obter apenas um post
-    );
+    // Puxa o post diretamente pelo ID
+    $post = get_post($id);
 
-    $posts = get_posts($args);
-
-    if (empty($posts)) {
-        return new WP_Error('no_post', 'pergunta not found', array('status' => 404));
+    // Verifica se o post existe e se realmente é do tipo 'pergunta'
+    if (empty($post) || $post->post_type !== 'pergunta') {
+        return new WP_Error('no_post', 'Pergunta não encontrada', array('status' => 404));
     }
 
-    $post = $posts[0]; // Obter o primeiro (e único) post encontrado
+    // Tenta deletar o post (true = força exclusão permanente, pulando a lixeira)
+    $deleted = wp_delete_post($post->ID, true);
 
-    // Verificar permissões
-    /*if (!current_user_can('delete_post', $post->ID)) {
-        return new WP_Error('rest_forbidden', esc_html__('You cannot delete this post.'), array('status' => rest_authorization_required_code()));
-    }*/
+    // Verifica se o WordPress conseguiu deletar
+    if (!$deleted) {
+        return new WP_Error('delete_failed', 'Erro interno ao tentar deletar a pergunta', array('status' => 500));
+    }
 
-    // Deletar o post
-    wp_delete_post($post->ID, true);
-
-    return new WP_REST_Response(array('message' => 'pergunta deletado'), 200);
+    // Retorna sucesso
+    return new WP_REST_Response(array(
+        'message' => 'Pergunta deletada com sucesso',
+        'deleted_id' => $id
+    ), 200);
 }
 
 // Função para registrar o endpoint
@@ -35,7 +33,13 @@ function registrar_delete_pergunta_by_id() {
     register_rest_route('api', '/pergunta/(?P<id>\d+)', array(
         'methods' => 'DELETE',
         'callback' => 'delete_pergunta_by_id',
+        
+        // PERMISSÃO: "__return_true" deixa qualquer um deletar. 
+        // Use isso APENAS para o protótipo local. 
+        // Em produção, troque para uma função que verifique se o usuário está logado.
+        'permission_callback' => '__return_true', 
     ));
 }
 add_action('rest_api_init', 'registrar_delete_pergunta_by_id');
+
 ?>

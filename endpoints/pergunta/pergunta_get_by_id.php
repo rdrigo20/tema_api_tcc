@@ -1,40 +1,34 @@
+
+
 <?php
 
 // Função de callback para obter um post por id
 function get_pergunta_by_id(WP_REST_Request $request) {
-    $id = $request['id']; // Obter o id da requisição
+    // É uma boa prática forçar que o ID seja um número inteiro por segurança
+    $id = (int) $request['id']; 
 
-    // Argumentos para buscar o post por id
-    $args = array(
-        'ID' => $id,
-        'post_type' => 'pergunta',
-        'post_status' => 'publish',
-        'numberposts' => 1, // Obter apenas um post
-    );
+    // Puxa o post diretamente pelo ID (muito mais rápido que get_posts)
+    $post = get_post($id);
 
-    $posts = get_posts($args);
-
-    //verifica se post existe, se n existir retorna um erro 404
-    if (empty($posts)) {
-        return new WP_Error('no_post', 'pergunta not found', array('status' => 404));
+    // Verifica se o post existe, se é realmente uma 'pergunta' e se está publicado
+    if (empty($post) || $post->post_type !== 'pergunta' || $post->post_status !== 'publish') {
+        return new WP_Error('no_post', 'Pergunta não encontrada', array('status' => 404));
     }
-
-    $post = $posts[0]; // Obter o primeiro (e único) post encontrado
 
     // Preparar os dados para a resposta
     $post_data = array(
-        'id' => $post->ID,
-        'title' => $post->post_title,
-        'content' => $post->post_content, //se n for o post_content o bagulho n vai
-        'author' => get_the_author_meta('display_name', $post->post_author),
-        'date' => $post->post_date,
-        'modified' => $post->post_modified, //se nada for modificado, vai ser a mesma data do post
-        'slug' => $post->post_name,
-        //vai pegar os campos personalizados do custom post type
-        'meta' => array(
+        'id'       => $post->ID,
+        'title'    => $post->post_title,
+        'content'  => $post->post_content,
+        'author'   => get_the_author_meta('display_name', $post->post_author),
+        'date'     => $post->post_date,
+        'modified' => $post->post_modified,
+        'slug'     => $post->post_name,
+        // Pega os campos personalizados (meta) do post
+        'meta'     => array(
             'conteudo' => get_post_meta($post->ID, 'conteudo', true),
-            'ordem' => get_post_meta($post->ID, 'ordem', true),
-            'mostrar' => get_post_meta($post->ID, 'mostrar', true),
+            'ordem'    => get_post_meta($post->ID, 'ordem', true),
+            'mostrar'  => get_post_meta($post->ID, 'mostrar', true),
         ),
     );
 
@@ -44,7 +38,7 @@ function get_pergunta_by_id(WP_REST_Request $request) {
 // Função para registrar o endpoint
 function registrar_get_pergunta_by_id() {
     register_rest_route('api', '/pergunta/(?P<id>\d+)', array(
-        'methods' => 'GET',
+        'methods'  => 'GET',
         'callback' => 'get_pergunta_by_id',
     ));
 }

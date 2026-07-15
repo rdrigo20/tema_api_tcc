@@ -1,4 +1,8 @@
 <?php
+
+// NÃO GARANTO Q NENHUM DOS ENDPOINTS "BY_SLUG" FUNCIONEM
+
+
 // Função de callback para deletar um post por slug pergunta
 function delete_pergunta_by_slug(WP_REST_Request $request) {
     $slug = $request['slug']; // Obter o slug da requisição

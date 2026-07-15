@@ -1,5 +1,9 @@
 <?php
 
+
+// NÃO GARANTO Q NENHUM DOS ENDPOINTS "BY_SLUG" FUNCIONEM
+
+
 // Função de callback para obter um post por slug
 function get_pergunta_by_slug(WP_REST_Request $request) {
     $slug = $request['slug']; // Obter o slug da requisição
