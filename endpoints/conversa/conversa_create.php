@@ -8,7 +8,7 @@ function conversa_create($request) {
 
     //pega os dados q seram os campos personalizados do custom post type + o título q eu acho q é obrigatório
     $titulo = sanitize_text_field($request['titulo']);
-    $conteudo = sanitize_text_field($request['conteudo']);
+    $conteudo = sanitize_textarea_field($request['conteudo']);
 
 
     $response = array(

@@ -1,6 +1,6 @@
 <?php
 
-function pergunta_create($request) {
+function resposta_create($request) {
     
     //pega e registra qual usuário está fazendo a requisição
     $user = wp_get_current_user();
@@ -9,19 +9,20 @@ function pergunta_create($request) {
     //pega os dados q seram os campos personalizados do custom post type + o título q eu acho q é obrigatório
     $titulo = sanitize_text_field($request['titulo']);
     $conteudo = sanitize_textarea_field($request['conteudo']);
-    $ordem = $request['ordem'];
+    $id_pergunta = $request['id_pergunta'];
+    $id_conversa = $request['id_conversa'];
 
 
     $response = array(
         'post_author' => $user_id,
-        'post_type' => 'pergunta',
+        'post_type' => 'resposta',
         'post_title' => $titulo,
         'post_status' => 'publish',
         'post_content' => $conteudo,
         //meta_input é um array que permite salvar os campos personalizados do custom post type
         'meta_input' => array(
-            'ordem' => $ordem,
-            'mostrar' => true, //esse campo é pra eu poder controlar se a pergunta vai ser mostrada ou não, por padrão ele vai ser true
+            'id_pergunta' => $id_pergunta,
+            'id_conversa' => $id_conversa,
         ),
     );
 
@@ -32,15 +33,15 @@ function pergunta_create($request) {
     return rest_ensure_response($response);
 }
 
-function registrar_pergunta_create() {
-    register_rest_route('api', '/pergunta', array(
+function registrar_resposta_create() {
+    register_rest_route('api', '/resposta', array(
         array(
             'methods' => WP_REST_Server::CREATABLE,
-            'callback' => 'pergunta_create',
+            'callback' => 'resposta_create',
         ),
     ));
 }
 
-add_action('rest_api_init', 'registrar_pergunta_create');
+add_action('rest_api_init', 'registrar_resposta_create');
 
 ?>

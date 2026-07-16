@@ -3,16 +3,16 @@
 <?php
 
 // Função de callback para obter um post por id
-function get_pergunta_by_id(WP_REST_Request $request) {
+function get_resposta_by_id(WP_REST_Request $request) {
     // É uma boa prática forçar que o ID seja um número inteiro por segurança
     $id = (int) $request['id']; 
 
     // Puxa o post diretamente pelo ID (muito mais rápido que get_posts)
     $post = get_post($id);
 
-    // Verifica se o post existe, se é realmente uma 'pergunta' e se está publicado
-    if (empty($post) || $post->post_type !== 'pergunta' || $post->post_status !== 'publish') {
-        return new WP_Error('no_post', 'Pergunta não encontrada', array('status' => 404));
+    // Verifica se o post existe, se é realmente uma 'resposta' e se está publicado
+    if (empty($post) || $post->post_type !== 'resposta' || $post->post_status !== 'publish') {
+        return new WP_Error('no_post', 'resposta não encontrada', array('status' => 404));
     }
 
     // Preparar os dados para a resposta
@@ -26,8 +26,8 @@ function get_pergunta_by_id(WP_REST_Request $request) {
         'slug'     => $post->post_name,
         // Pega os campos personalizados (meta) do post
         'meta'     => array(
-            'ordem'    => get_post_meta($post->ID, 'ordem', true),
-            'mostrar'  => get_post_meta($post->ID, 'mostrar', true),
+            'id_conversa' => get_post_meta($post->ID, 'id_conversa', true),
+            'id_pergunta'    => get_post_meta($post->ID, 'id_pergunta', true),
         ),
     );
 
@@ -35,12 +35,12 @@ function get_pergunta_by_id(WP_REST_Request $request) {
 }
 
 // Função para registrar o endpoint
-function registrar_get_pergunta_by_id() {
-    register_rest_route('api', '/pergunta/(?P<id>\d+)', array(
+function registrar_get_resposta_by_id() {
+    register_rest_route('api', '/resposta/(?P<id>\d+)', array(
         'methods'  => 'GET',
-        'callback' => 'get_pergunta_by_id',
+        'callback' => 'get_resposta_by_id',
     ));
 }
-add_action('rest_api_init', 'registrar_get_pergunta_by_id');
+add_action('rest_api_init', 'registrar_get_resposta_by_id');
 
 ?>
