@@ -54,6 +54,11 @@ require_once(plugin_dir_path( __FILE__ ) . "endpoints/resposta/resposta_get_by_i
 require_once(plugin_dir_path( __FILE__ ) . "endpoints/resposta/resposta_delete_by_id.php");
 require_once(plugin_dir_path( __FILE__ ) . "endpoints/resposta/resposta_update_by_id.php");
 
-
+// Arquivos do custom post type 'resultado'
+require_once(plugin_dir_path( __FILE__ ) . "endpoints/resultado/resultado_create.php");
+require_once(plugin_dir_path( __FILE__ ) . "endpoints/resultado/resultado_get_all.php");
+require_once(plugin_dir_path( __FILE__ ) . "endpoints/resultado/resultado_get_by_id.php");
+require_once(plugin_dir_path( __FILE__ ) . "endpoints/resultado/resultado_delete_by_id.php");
+require_once(plugin_dir_path( __FILE__ ) . "endpoints/resultado/resultado_update_by_id.php");
 
 ?>
