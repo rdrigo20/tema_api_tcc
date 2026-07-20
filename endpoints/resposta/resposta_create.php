@@ -2,7 +2,7 @@
 
 function resposta_create($request) {
     
-    //pega e registra qual usuário está fazendo a requisição
+    //isso aqui n é 100% seguro e se n der certo ele vai por id = 0 e vai dar merda
     $user = wp_get_current_user();
     $user_id = $user->ID;
 
