@@ -2,35 +2,43 @@
 
 function conversa_create($request) {
     
-    //isso aqui n é 100% seguro e se n der certo ele vai por id = 0 e vai dar merda
-    $user = wp_get_current_user();
-    $user_id = $user->ID;
+    // 1. Pega o ID do usuário de forma segura via JSON (igual fizemos nas respostas)
+    $user_id = isset($request['user_id']) ? (int) $request['user_id'] : 0;
 
-    //pega os dados q seram os campos personalizados do custom post type + o título q eu acho q é obrigatório
+    if (!$user_id) {
+        return new WP_Error('falta_user', 'ID do usuário não fornecido.', array('status' => 400));
+    }
+
     $titulo = sanitize_text_field($request['titulo']);
     $conteudo = sanitize_textarea_field($request['conteudo']);
 
-
     $response = array(
-        'post_author' => $user_id,
-        'post_type' => 'conversa',
-        'post_title' => $titulo,
-        'post_status' => 'publish',
+        'post_author'  => $user_id, // Atrela a conversa ao usuário corretamente!
+        'post_type'    => 'conversa',
+        'post_title'   => $titulo,
+        'post_status'  => 'publish',
         'post_content' => $conteudo,
     );
 
-    $produto_id = wp_insert_post($response);
-    $response['id'] = get_post_field('post_name', $produto_id);
+    $conversa_id = wp_insert_post($response);
 
+    if (is_wp_error($conversa_id)) {
+        return $conversa_id;
+    }
 
-    return rest_ensure_response($response);
+    // Devolve o ID real da conversa criada no banco de dados!
+    return rest_ensure_response(array(
+        'status'      => 'sucesso',
+        'conversa_id' => $conversa_id
+    ));
 }
 
 function registrar_conversa_create() {
     register_rest_route('api', '/conversa', array(
         array(
-            'methods' => WP_REST_Server::CREATABLE,
-            'callback' => 'conversa_create',
+            'methods'             => WP_REST_Server::CREATABLE,
+            'callback'            => 'conversa_create',
+            'permission_callback' => '__return_true' // Permite o acesso via Headless
         ),
     ));
 }
