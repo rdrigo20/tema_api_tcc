@@ -46,7 +46,7 @@ require_once(plugin_dir_path( __FILE__ ) . "endpoints/conversa/conversa_get_all.
 require_once(plugin_dir_path( __FILE__ ) . "endpoints/conversa/conversa_get_by_id.php");
 require_once(plugin_dir_path( __FILE__ ) . "endpoints/conversa/conversa_delete_by_id.php");
 require_once(plugin_dir_path( __FILE__ ) . "endpoints/conversa/conversa_update_by_id.php");
-
+require_once(plugin_dir_path( __FILE__ ) . "endpoints/conversa/conversa_get_per_user.php");
 
 // Arquivos do custom post type 'resposta'
 require_once(plugin_dir_path( __FILE__ ) . "endpoints/resposta/resposta_create.php");
