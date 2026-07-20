@@ -28,6 +28,7 @@ require_once(plugin_dir_path( __FILE__ ) . "custom-post-type/resultado.php");
 require_once(plugin_dir_path( __FILE__ ) . "endpoints/user/usuario_post.php");
 require_once(plugin_dir_path( __FILE__ ) . "endpoints/user/usuario_get.php");
 require_once(plugin_dir_path( __FILE__ ) . "endpoints/user/usuario_put.php");
+require_once(plugin_dir_path( __FILE__ ) . "endpoints/user/login.php");
 
 // Arquivos do custom post type 'pergunta'
 require_once(plugin_dir_path( __FILE__ ) . "endpoints/pergunta/pergunta_create.php");
