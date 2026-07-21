@@ -34,7 +34,7 @@ function conversa_get_per_user(WP_REST_Request $request) {
                 'titulo'   => $post->post_title,
                 'conteudo' => $post->post_content,
                 // A função get_the_date já formata a data no padrão brasileiro bonitinho
-                'data'     => get_the_date('d/m/Y', $post->ID) 
+                'data'     => get_the_date('d/m/Y \à\s H:i', $post->ID) 
             );
         }
     }
