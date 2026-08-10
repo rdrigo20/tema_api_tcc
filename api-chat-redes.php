@@ -62,4 +62,6 @@ require_once(plugin_dir_path( __FILE__ ) . "endpoints/resultado/resultado_get_by
 require_once(plugin_dir_path( __FILE__ ) . "endpoints/resultado/resultado_delete_by_id.php");
 require_once(plugin_dir_path( __FILE__ ) . "endpoints/resultado/resultado_update_by_id.php");
 
+// Arquivos do chat com a IA
+require_once(plugin_dir_path( __FILE__ ) . "endpoints/chat_ia.php");
 ?>
