@@ -25,6 +25,9 @@ function get_all_conversa(WP_REST_Request $request) {
             'date' => $post->post_date,
             'modified' => $post->post_modified, //se nada for modificado, vai ser a mesma data do post
             'slug' => $post->post_name,
+            'meta' => array(
+                'config_atual'   => json_decode(get_post_meta($post->ID, 'config_atual', true)),                //'historico_chat' => get_post_meta($post->ID, 'historico_chat', true),
+            ),
         );
         $data[] = $post_data;
     }
