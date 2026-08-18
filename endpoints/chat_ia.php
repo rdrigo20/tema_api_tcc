@@ -1,45 +1,41 @@
 <?php
 
 function enviar_mensagem_para_ia($request) {
+
+    //AUMENTA O LIMITE GLOBAL DO PHP PARA 3 MINUTOS (180 segundos)
+    set_time_limit(180);// Isso impede que o erro "Maximum execution time" aconteça.
+
     // 1. Recebe a mensagem do usuário via JSON
     $mensagem_usuario = sanitize_text_field($request['mensagem']);
     
     // 2. O NOVO PROMPT DO SISTEMA (Baseado no seu novo JSON Padrão)
     // Usamos regras estritas para evitar que a IA alucine dados que o usuário não pediu.
-    $system_prompt = 'Você é um assistente especialista em redes e segurança, focado em configurar regras de firewall IPTables.
-    SUA ÚNICA SAÍDA DEVE SER UM JSON VÁLIDO. NÃO ESCREVA TEXTO FORA DO JSON.
+    $system_prompt = 'Você é um assistente especialista em redes IPTables.
+    SUA ÚNICA SAÍDA DEVE SER UM JSON VÁLIDO.
     
-    Seu objetivo é extrair as configurações solicitadas pelo usuário e preencher o objeto "configuracao".
-    Para os campos que o usuário AINDA NÃO informou, deixe como null, false ou array vazio [].
-    NÃO INVENTE IPs, portas ou serviços que não foram solicitados.
+    REGRAS DE FORMATAÇÃO ESTRITAS:
+    1. O campo "policies" deve conter APENAS strings ("DROP" ou "ACCEPT"). NUNCA use arrays ou objetos dentro de policies.
+    2. Se o usuário fornecer um IP único para bloqueio ou liberação, adicione a máscara /32 obrigatoriamente (ex: "192.168.1.50/32"). Se ele fornecer uma rede com máscara (ex: /24), mantenha como ele pediu.
+    3. Para campos não informados pelo usuário, use null, false ou []. NÃO invente dados.
     
-    O seu JSON DEVE OBRIGATORIAMENTE ter a estrutura exata abaixo:
-    
+    A saída DEVE ser estritamente neste formato:
     {
       "configuracao": {
-        "interfaces": {
-          "wan": null,
-          "lan": null
-        },
+        "interfaces": { "wan": null, "lan": null },
         "lan_network": null,
         "policies": {
-          "input": null,
-          "forward": null,
-          "output": null
+          "input": "ACCEPT", 
+          "forward": "ACCEPT", 
+          "output": "ACCEPT" 
         },
         "nat": false,
         "lan_free_internet": false,
         "connection_states": [],
         "drop_invalid": false,
-        "services": [
-            // Crie objetos aqui APENAS quando o usuário pedir para adicionar um serviço, exemplo:
-            // { "name": "SSH Roteador", "port": 22, "protocol": "tcp", "chain": "INPUT", "internal_ip": null, "allowed_from": ["lan"] }
-        ],
-        "blocked_ips": [
-            // Adicione strings de IPs ou CIDR bloqueados aqui APENAS quando solicitado, ex: "198.51.100.23" ou "185.220.101.0/24"
-        ]
+        "services": [],
+        "blocked_ips": []
       },
-      "resposta_amigavel": "Escreva aqui a sua resposta para o usuário. Confirme o que você alterou, explique de forma simples e pergunte qual é o próximo passo ou a próxima informação necessária."
+      "resposta_amigavel": "Sua resposta humana aqui."
     }';
 
     // 3. Monta o corpo da requisição para o Ollama
