@@ -22,20 +22,22 @@ function enviar_mensagem_para_ia($request) {
     }
 
     // 3. INJETA A MEMÓRIA NO PROMPT
-    $system_prompt = 'Você é um assistente de IPTables.
-    AQUI ESTÁ A CONFIGURAÇÃO ATUAL DA REDE DO USUÁRIO:
+    // 3. INJETA A MEMÓRIA NO PROMPT (Versão Blindada com Inversão)
+    $system_prompt = 'Você é um assistente especialista em redes IPTables.
+    
+    AQUI ESTÁ A CONFIGURAÇÃO ATUAL DO USUÁRIO:
     ' . $config_salva_json . '
 
-    O usuário enviará um novo pedido. Você deve analisar a configuração atual acima e ALTERÁ-LA de acordo com o pedido.
-    Devolva a estrutura JSON inteira (atualizada), sem nenhum texto fora.
+    Sua tarefa é analisar o pedido do usuário, explicar o que foi feito e atualizar a configuração atual.
     
-    REGRAS DE FORMATAÇÃO ESTRITAS:
-    1. O campo "policies" deve conter APENAS strings ("DROP" ou "ACCEPT"). NUNCA use arrays ou objetos dentro de policies.
-    2. Se o usuário fornecer um IP único para bloqueio ou liberação, adicione a máscara /32 obrigatoriamente (ex: "192.168.1.50/32"). Se ele fornecer uma rede com máscara (ex: /24), mantenha como ele pediu.
-    3. Para campos não informados pelo usuário, use null, false ou []. NÃO invente dados.
+    REGRAS DE ESTRUTURA (OBRIGATÓRIAS):
+    1. O seu JSON DEVE ter EXATAMENTE duas chaves na raiz: "resposta_amigavel" e "configuracao".
+    2. na resposta_amigavel, explique de forma clara e resumida o que foi feito, sem repetir a configuração. A chave "resposta_amigavel" DEVE VIR PRIMEIRO.
+    3. Para campos não informados, use null, false ou []. NÃO invente dados.
     
-    A saída DEVE ser estritamente neste formato:
+    A SUA SAÍDA DEVE SER ESTRITAMENTE NESTE FORMATO:
     {
+      "resposta_amigavel": "explique de forma resumida o que você fez",
       "configuracao": {
         "interfaces": { "wan": null, "lan": null },
         "lan_network": null,
@@ -50,8 +52,7 @@ function enviar_mensagem_para_ia($request) {
         "drop_invalid": false,
         "services": [],
         "blocked_ips": []
-      },
-      "resposta_amigavel": "Sua resposta humana aqui."
+      }
     }';
 
     // 4. Monta o corpo da requisição para o Ollama
