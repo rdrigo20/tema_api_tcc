@@ -32,8 +32,10 @@ function enviar_mensagem_para_ia($request) {
     
     REGRAS DE ESTRUTURA (OBRIGATÓRIAS):
     1. O seu JSON DEVE ter EXATAMENTE duas chaves na raiz: "resposta_amigavel" e "configuracao".
-    2. na resposta_amigavel, explique de forma clara e resumida o que foi feito, sem repetir a configuração. A chave "resposta_amigavel" DEVE VIR PRIMEIRO.
+    2. na resposta_amigavel, explique de forma clara e resumida o que foi feito ou responda a pergunta do usuário. A chave "resposta_amigavel" DEVE VIR PRIMEIRO.
     3. Para campos não informados, use null, false ou []. NÃO invente dados.
+    4. Quando o usúario solicitar uma configuração vc deve alterar os valores referentes a solicitação e manter a configuração atual para os campos não alterados.  
+    5.caso o usário não peça mudanças na configuração, a chave "configuracao" deve ser idêntica à configuração atual.
     
     A SUA SAÍDA DEVE SER ESTRITAMENTE NESTE FORMATO:
     {
