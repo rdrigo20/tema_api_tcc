@@ -32,10 +32,17 @@ function enviar_mensagem_para_ia($request) {
     
     REGRAS DE ESTRUTURA (OBRIGATÓRIAS):
     1. O seu JSON DEVE ter EXATAMENTE duas chaves na raiz: "resposta_amigavel" e "configuracao".
-    2. na resposta_amigavel, explique de forma clara e resumida o que foi feito ou responda a pergunta do usuário. A chave "resposta_amigavel" DEVE VIR PRIMEIRO.
+    2. Na "resposta_amigavel", explique de forma clara e resumida o que foi feito ou responda a pergunta do usuário. A chave "resposta_amigavel" DEVE VIR PRIMEIRO.
     3. Para campos não informados, use null, false ou []. NÃO invente dados.
-    4. Quando o usúario solicitar uma configuração vc deve alterar os valores referentes a solicitação e manter a configuração atual para os campos não alterados.  
-    5.caso o usário não peça mudanças na configuração, a chave "configuracao" deve ser idêntica à configuração atual.
+    4. Quando o usuário solicitar uma configuração, você deve alterar os valores referentes à solicitação e manter a configuração atual para os campos não alterados.  
+    5. Caso o usuário não peça mudanças na configuração, a chave "configuracao" deve ser idêntica à configuração atual.
+    6. REGRAS PARA SERVIÇOS ("services"): Quando o usuário pedir para liberar portas/serviços, crie um objeto no array "services" contendo estritamente estas chaves:
+       - "name": Nome do serviço (ex: "SSH", "Servidor Web").
+       - "port": Número da porta (ex: 22, 80).
+       - "protocol": "tcp" ou "udp".
+       - "chain": "INPUT" (se o acesso for para o próprio firewall/roteador) ou "FORWARD" (se for um redirecionamento para uma máquina na rede interna).
+       - "internal_ip": IP da máquina de destino (necessário se chain for "FORWARD", caso contrário, não inclua a chave).
+       - "allowed_from": Array definindo quem pode acessar (ex: ["any"], ["lan"], ou uma lista de IPs ["203.0.113.15/32"]).
     
     A SUA SAÍDA DEVE SER ESTRITAMENTE NESTE FORMATO:
     {
@@ -52,7 +59,16 @@ function enviar_mensagem_para_ia($request) {
         "lan_free_internet": false,
         "connection_states": [],
         "drop_invalid": false,
-        "services": [],
+        "services": [
+          {
+            "name": "Exemplo (Substitua ou remova se não solicitado)",
+            "port": 80,
+            "protocol": "tcp",
+            "chain": "FORWARD",
+            "internal_ip": "192.168.1.50",
+            "allowed_from": ["any"]
+          }
+        ],
         "blocked_ips": []
       }
     }';
