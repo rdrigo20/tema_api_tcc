@@ -135,7 +135,7 @@ function enviar_mensagem_para_ia($request) {
     // 7. A MÁGICA ACONTECE AQUI: Salva a nova configuração no banco de dados!
     // Pegamos apenas o array "configuracao" gerado pela IA, codificamos para string e salvamos por cima da antiga.
     if (isset($json_extraido['configuracao'])) {
-        update_post_meta(
+        update_post_meta( //essa função é natia do WordPress, a alteração é feita sem usar o endpoint de update_conversa_by_id.php
             $id_conversa, 
             'config_atual', 
             wp_slash(wp_json_encode($json_extraido['configuracao']))
