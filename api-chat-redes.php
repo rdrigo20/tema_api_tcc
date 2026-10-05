@@ -66,7 +66,9 @@ require_once(plugin_dir_path( __FILE__ ) . "endpoints/resultado/resultado_update
 //Arquivos do custom post type 'atalho_ip'
 require_once(plugin_dir_path( __FILE__ ) . "endpoints/atalho/atalho_ip_create.php");
 require_once(plugin_dir_path( __FILE__ ) . "endpoints/atalho/atalho_ip_get_all.php");
+//require_once(plugin_dir_path( __FILE__ ) . "endpoints/atalho/atalho_ip_pega_tudo.php");
 require_once(plugin_dir_path( __FILE__ ) . "endpoints/atalho/atalho_ip_delete.php");
+require_once(plugin_dir_path( __FILE__ ) . "endpoints/atalho/atalho_ip_update.php");
 
 // Arquivos do chat com a IA
 require_once(plugin_dir_path( __FILE__ ) . "endpoints/chat_ia.php");
