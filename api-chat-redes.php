@@ -19,6 +19,7 @@ require_once(plugin_dir_path( __FILE__ ) . "custom-post-type/conversa.php");
 require_once(plugin_dir_path( __FILE__ ) . "custom-post-type/pergunta.php");
 require_once(plugin_dir_path( __FILE__ ) . "custom-post-type/resposta.php");
 require_once(plugin_dir_path( __FILE__ ) . "custom-post-type/resultado.php");
+require_once(plugin_dir_path( __FILE__ ) . "custom-post-type/atalho_ip.php");
 
 // ----------------------------------------------------
 // INCLUINDO OS ARQUIVOS DE ENDPOINTS
@@ -61,6 +62,11 @@ require_once(plugin_dir_path( __FILE__ ) . "endpoints/resultado/resultado_get_al
 require_once(plugin_dir_path( __FILE__ ) . "endpoints/resultado/resultado_get_by_id.php");
 require_once(plugin_dir_path( __FILE__ ) . "endpoints/resultado/resultado_delete_by_id.php");
 require_once(plugin_dir_path( __FILE__ ) . "endpoints/resultado/resultado_update_by_id.php");
+
+//Arquivos do custom post type 'atalho_ip'
+require_once(plugin_dir_path( __FILE__ ) . "endpoints/atalho/atalho_ip_create.php");
+require_once(plugin_dir_path( __FILE__ ) . "endpoints/atalho/atalho_ip_get_all.php");
+require_once(plugin_dir_path( __FILE__ ) . "endpoints/atalho/atalho_ip_delete.php");
 
 // Arquivos do chat com a IA
 require_once(plugin_dir_path( __FILE__ ) . "endpoints/chat_ia.php");
