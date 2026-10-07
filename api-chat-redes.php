@@ -30,6 +30,7 @@ require_once(plugin_dir_path( __FILE__ ) . "endpoints/user/usuario_post.php");
 require_once(plugin_dir_path( __FILE__ ) . "endpoints/user/usuario_get.php");
 require_once(plugin_dir_path( __FILE__ ) . "endpoints/user/usuario_put.php");
 require_once(plugin_dir_path( __FILE__ ) . "endpoints/user/login.php");
+require_once(plugin_dir_path( __FILE__ ) . "endpoints/user/usuario_get_all.php");
 
 // Arquivos do custom post type 'pergunta'
 require_once(plugin_dir_path( __FILE__ ) . "endpoints/pergunta/pergunta_create.php");
