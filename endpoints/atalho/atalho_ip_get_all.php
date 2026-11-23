@@ -13,15 +13,18 @@ function get_atalhos_by_usuario(WP_REST_Request $request) {
         'post_type' => 'atalho_ip',
         'post_status' => 'publish',
         'numberposts' => -1,
+        // A meta_query está comentada porque n estamos usando o escopo e queremos pegar todos os atalhos
+        /*
         'meta_query' => array(
             'relation' => 'OR',
             array(
                 'key' => 'escopo_atalho_ip',
-                'value' => '1', // 1 = Global (visível para todos)
+                'value' => '1', 
                 'compare' => '='
             ),
             // Para filtrar pelo autor, usamos o parâmetro padrão 'author' fora da meta_query
         ),
+        */
         'author' => $user_id // Busca os pessoais criados por este usuário
     );
 
@@ -39,6 +42,8 @@ function get_atalhos_by_usuario(WP_REST_Request $request) {
     foreach ($posts as $post) {
         $post_data = array(
             'id' => $post->ID,
+            //'author' => get_the_author_meta('display_name', $post->post_author),
+            //'author_id' => (int) $post->post_author, // <--- (ID numérico do criador)
             'title' => $post->post_title,
             'meta' => array(
                 // Resgata os metadados exatos que foram salvos na criação

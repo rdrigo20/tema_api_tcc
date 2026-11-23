@@ -13,15 +13,18 @@ function get_atalhos_service_by_usuario(WP_REST_Request $request) {
         'post_type' => 'atalho_service',
         'post_status' => 'publish',
         'numberposts' => -1,
+        // A meta_query está comentada porque n estamos usando o escopo e queremos pegar todos os atalhos
+        /*
         'meta_query' => array(
             'relation' => 'OR',
             array(
                 'key' => 'escopo_atalho_service',
-                'value' => '1', // 1 = Global (visível para todos)
+                'value' => '1',
                 'compare' => '='
             ),
             // Para filtrar pelo autor, usamos o parâmetro padrão 'author' fora da meta_query
         ),
+        */
         'author' => $user_id // Busca os pessoais criados por este usuário
     );
 

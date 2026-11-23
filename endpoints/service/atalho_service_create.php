@@ -13,7 +13,7 @@ function atalho_service_create($request) {
 
     $nome_atalho_service = $request['nome_atalho_service']; //nome do atalho vai ser a partir dele q a IA vai indentificar o atalho
     $ip_atalho_service = $request['ip_atalho_service']; 
-    $escopo_atalho_service = $request['escopo_atalho_service']; //escopo pessoal = 0, escopo global = 1
+    $escopo_atalho_service = $request['escopo_atalho_service']; //n estamos usando o campo escopo mas ele pode ser usado futuramente para diferenciar entre escopo pessoal e global
     $port_atalho_service = $request['port_atalho_service']; 
     $chain_atalho_service = $request['chain_atalho_service']; 
     $protocol_atalho_service = $request['protocol_atalho_service']; 

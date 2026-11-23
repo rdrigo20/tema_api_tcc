@@ -13,7 +13,7 @@ function atalho_ip_create($request) {
 
     $nome_atalho_ip = $request['nome_atalho_ip']; //nome do atalho vai ser a partir dele q a IA vai indentificar o atalho
     $ip_atalho_ip = $request['ip_atalho_ip']; 
-    $escopo_atalho_ip = $request['escopo_atalho_ip']; //escopo pessoal = 0, escopo global = 1
+    $escopo_atalho_ip = $request['escopo_atalho_ip']; //n estamos usando o campo escopo mas ele pode ser usado futuramente para diferenciar entre escopo pessoal e global
 
     // 2. Cria o post já com os metadados
     $response = array(

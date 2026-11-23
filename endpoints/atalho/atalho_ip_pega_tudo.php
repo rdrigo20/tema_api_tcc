@@ -27,6 +27,7 @@ function get_all_atalho_ip(WP_REST_Request $request) {
             'title' => $post->post_title,
             'content' => $post->post_content, //se n for o post_content o bagulho n vai
             'author' => get_the_author_meta('display_name', $post->post_author),
+            'author_id' => (int) $post->post_author, // <--- (ID numérico do criador)
             'date' => $post->post_date,
             'modified' => $post->post_modified, //se nada for modificado, vai ser a mesma data do post
             'slug' => $post->post_name,
