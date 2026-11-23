@@ -39,11 +39,14 @@ function update_atalho_ip_by_id(WP_REST_Request $request) {
     if (isset($request['ip_atalho_ip'])) {
         update_post_meta($post_id, 'ip_atalho_ip', sanitize_text_field($request['ip_atalho_ip']));
     }
+    //n estou mais unsando o sistema de escopo, portanto n preciso mas dessa verificação
+    /*
     if (isset($request['escopo_atalho_ip'])) {
         // Valida se o escopo enviado é um número inteiro (0 ou 1)
         update_post_meta($post_id, 'escopo_atalho_ip', (int) $request['escopo_atalho_ip']);
     }
-
+    */
+    
     return new WP_REST_Response(array('message' => 'Atalho de IP atualizado com sucesso.', 'id' => $post_id), 200);
 }
 

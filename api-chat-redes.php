@@ -77,6 +77,7 @@ require_once(plugin_dir_path( __FILE__ ) . "endpoints/service/atalho_service_cre
 require_once(plugin_dir_path( __FILE__ ) . "endpoints/service/atalho_service_get_all.php");
 require_once(plugin_dir_path( __FILE__ ) . "endpoints/service/atalho_service_delete.php");
 require_once(plugin_dir_path( __FILE__ ) . "endpoints/service/atalho_service_update.php");
+require_once(plugin_dir_path( __FILE__ ) . "endpoints/service/atalho_service_pega_tudo.php");
 
 // Arquivos do chat com a IA
 require_once(plugin_dir_path( __FILE__ ) . "endpoints/chat_ia.php");
